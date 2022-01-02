@@ -1,0 +1,51 @@
+[-ControlStructures::ProhibitUnlessBlocks]
+# oh. c'mon. just a little bit
+
+[-ValuesAndExpressions::ProhibitNoisyQuotes]
+# that is not constructive constraint at all
+
+[-Variables::ProhibitPackageVars]
+# sad, but true - this is how real world actually works
+
+[-NamingConventions::Capitalization]
+# eh?
+
+[-ControlStructures::ProhibitPostfixControls]
+# just a tiny bit?
+
+[-Miscellanea::ProhibitTies]
+# seriously?
+
+[-RegularExpressions::RequireExtendedFormatting]
+# good to be, but i don't like to write a long book near each regexp desribing what it does
+
+[-InputOutput::RequireBriefOpen]
+# I'm closing that fucking FH as soon as fucking possible, is that clear, you, little shit?
+
+[-ValuesAndExpressions::ProhibitEmptyQuotes]
+# totally garbage rule
+
+[-CodeLayout::RequireTidyCode]
+# just fuck off
+
+[-CodeLayout::ProhibitParensWithBuiltins]
+# nope
+
+[-InputOutput::RequireCheckedClose]
+# let's imagine situation that close() returns an error - what i'm supposed to do?
+
+[-RegularExpressions::RequireLineBoundaryMatching]
+# i don't give a shit to folks that think in sed|awk way - it's fucking perl, man, it uses perl regexes, not those
+# pricky posix ones!
+
+[-ValuesAndExpressions::ProhibitMagicNumbers]
+# in this program it is easy to guess what "magick" numbers means, just rtfm, don't be lazy asshole.
+
+[-Modules::ProhibitExcessMainComplexity]
+# okay. next time I promise I'll do that.
+
+[-RegularExpressions::ProhibitEscapedMetacharacters]
+# no, i have to allow this, so go play in your sandbox in your kindergarden
+
+[-ControlStructures::ProhibitCascadingIfElse]
+# just shut the fuck up

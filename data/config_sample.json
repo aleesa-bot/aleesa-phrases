@@ -1,0 +1,44 @@
+{
+    # server address
+    "server" : "redis",
+    "port" : "6379",
+    "channels": [
+        "phrases"
+    ],
+
+    # should we fork() and become unix daemon?
+    "daemonize": 1,
+
+    # unprivileged system user to run bot as
+    "user" : "nobody",
+
+    # logs goes there
+    "log" : "/var/log/aleesa-weba/aleesa-phrases.log",
+    "loglevel": "notice",
+
+    # ditto
+    "pid" : "/var/run/aleesa-phrases/aleesa-phrases.pid",
+
+    # maximal amount of message forwardings, to avoid endless loops
+    "forwards_max" : 5,
+
+    "lat" : {
+        "brain": "data/lat/brain.sqlite",
+        "src": "data/lat.txt"
+    },
+
+    "fortune" : {
+        "dir" : "data/fortune",
+        "srcdir" : "data/fortune_src"
+    },
+
+    "proverb" : {
+        "dir" : "data/proverb",
+        "srcdir" : "data/proverb_src"
+    },
+
+    "friday" : {
+        "dir" : "data/friday",
+        "src" : "data/friday.txt"
+    }
+}
