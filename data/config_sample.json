@@ -22,11 +22,6 @@
     # maximal amount of message forwardings, to avoid endless loops
     "forwards_max" : 5,
 
-    "lat" : {
-        "brain": "data/lat/brain.sqlite",
-        "src": "data/lat.txt"
-    },
-
     "fortune" : {
         "dir" : "data/fortune",
         "srcdir" : "data/fortune_src"

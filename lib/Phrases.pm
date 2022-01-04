@@ -19,7 +19,6 @@ use Data::Dumper;
 use Conf qw (LoadConf);
 use Fortune qw (Fortune);
 use Friday qw (Friday);
-use Lat qw (Lat);
 use Proverb qw (Proverb);
 
 use version; our $VERSION = qw (1.0);
@@ -34,6 +33,7 @@ my $parse_message = sub {
 	my $self = shift;
 	my $m = shift;
 	my $answer = $m;
+	$answer->{from} = 'phrases';
 	my $send_to = $m->{plugin};
 	my $reply;
 
@@ -60,21 +60,31 @@ my $parse_message = sub {
 	} else {
 		$answer->{misc}->{answer} = 1;
 		$answer->{misc}->{csign} = '!';
+		$answer->{misc}->{msg_format} = 0;
 	}
 
 	$log->debug ('[DEBUG] Incoming message ' . Dumper ($m));
 
 	if (substr ($m->{message}, 0, 1) eq $answer->{misc}->{csign}) {
-		if ((substr ($m->{message}, 1) eq 'lat'  ||  substr ($m->{message}, 1) eq 'лат')) {
-			$reply = Lat ();
-		} elsif (substr ($m->{message}, 1) eq 'friday'  ||  substr ($m->{message}, 1) eq 'пятница') {
+		if (substr ($m->{message}, 1) eq 'friday'  ||  substr ($m->{message}, 1) eq 'пятница') {
 			$reply = Friday ();
 		} elsif (substr ($m->{message}, 1) eq 'proverb'  ||  substr ($m->{message}, 1) eq 'пословица') {
 			$reply = Proverb ();
 		} elsif (substr ($m->{message}, 1) eq 'fortune'  ||  substr ($m->{message}, 1) eq 'фортунка'  ||
 		         substr ($m->{message}, 1) eq 'f'  ||  substr ($m->{message}, 1) eq 'ф') {
 			if ($m->{plugin} eq 'telegram') {
-				$reply = sprintf "```\n%s\n```\n", trim (Fortune ());
+				if ($m->{misc}->{good_morning}){
+					# fortune mod
+					my @intro = (
+						'Сегодняшний день пройдёт под эгидой фразы:',
+						'Крылатая фраза на сегодня:',
+						'Сегодняшняя фраза дня:',
+					);
+
+					$reply = sprintf "%s\n```\n%s\n```\n", $intro[irand ($#intro + 1)], trim (Fortune ());
+				} else {
+					$reply = sprintf "```\n%s\n```\n", trim (Fortune ());
+				}
 			} else {
 				$reply = trim (Fortune ());
 			}

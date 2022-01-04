@@ -1,4 +1,4 @@
-requires 'Carp',                 '0';
+requires 'Carp',                 '==1.50';
 requires 'Cwd::utf8',            '==0.011';
 requires 'Data::Dumper',         '==2.183';
 requires 'Encode',               '==3.16';
@@ -6,7 +6,6 @@ requires 'English',              '==1.11';
 requires 'EV',                   '==4.33';
 requires 'File::Basename',       '0';
 requires 'File::Path',           '==2.18';
-requires 'Hailo',                '==0.75';
 requires 'JSON',                 '==4.03';
 requires 'JSON::XS',             '==4.03';
 requires 'local::lib',           '==2.000028';
