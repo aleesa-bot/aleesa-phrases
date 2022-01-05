@@ -9,11 +9,13 @@ use open qw (:std :utf8);
 
 # Модули для работы приложения
 use Log::Any qw ($log);
+use Math::Random::Secure qw (irand);
 # Чтобы "уж точно" использовать hiredis-биндинги, загрузим этот модуль перед Mojo::Redis
 use Protocol::Redis::XS;
 use Mojo::Redis;
 use Mojo::IOLoop;
 use Mojo::IOLoop::Signal;
+use Mojo::Util qw (trim);
 use Data::Dumper;
 
 use Conf qw (LoadConf);
