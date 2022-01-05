@@ -49,3 +49,6 @@
 
 [-ControlStructures::ProhibitCascadingIfElse]
 # just shut the fuck up
+
+[-Subroutines::ProhibitSubroutinePrototypes]
+# i like it!

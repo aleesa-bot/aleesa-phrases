@@ -8,6 +8,7 @@ use utf8;
 use open qw (:std :utf8);
 
 # Модули для работы приложения
+use Clone qw (clone);
 use Log::Any qw ($log);
 use Math::Random::Secure qw (irand);
 # Чтобы "уж точно" использовать hiredis-биндинги, загрузим этот модуль перед Mojo::Redis
@@ -21,6 +22,7 @@ use Data::Dumper;
 use Conf qw (LoadConf);
 use Fortune qw (Fortune);
 use Friday qw (Friday);
+use Karma qw (KarmaGet KarmaSet);
 use Proverb qw (Proverb);
 
 use version; our $VERSION = qw (1.0);
@@ -34,7 +36,7 @@ my $fwd_cnt = $c->{'forward_max'} // 5;
 my $parse_message = sub {
 	my $self = shift;
 	my $m = shift;
-	my $answer = $m;
+	my $answer = clone ($m);
 	$answer->{from} = 'phrases';
 	my $send_to = $m->{plugin};
 	my $reply;
@@ -67,13 +69,15 @@ my $parse_message = sub {
 
 	$log->debug ('[DEBUG] Incoming message ' . Dumper ($m));
 
+	# Нормальная команда
 	if (substr ($m->{message}, 0, 1) eq $answer->{misc}->{csign}) {
-		if (substr ($m->{message}, 1) eq 'friday'  ||  substr ($m->{message}, 1) eq 'пятница') {
+		my $cmd = substr ($m->{message}, 1);
+
+		if ($cmd eq 'friday'  ||  $cmd eq 'пятница') {
 			$reply = Friday ();
-		} elsif (substr ($m->{message}, 1) eq 'proverb'  ||  substr ($m->{message}, 1) eq 'пословица') {
+		} elsif ($cmd eq 'proverb'  ||  $cmd eq 'пословица') {
 			$reply = Proverb ();
-		} elsif (substr ($m->{message}, 1) eq 'fortune'  ||  substr ($m->{message}, 1) eq 'фортунка'  ||
-		         substr ($m->{message}, 1) eq 'f'  ||  substr ($m->{message}, 1) eq 'ф') {
+		} elsif ($cmd eq 'fortune'  ||  $cmd eq 'фортунка'  ||  $cmd eq 'f'  ||  $cmd eq 'ф') {
 			if ($m->{plugin} eq 'telegram') {
 				if ($m->{misc}->{good_morning}){
 					# fortune mod
@@ -90,6 +94,25 @@ my $parse_message = sub {
 			} else {
 				$reply = trim (Fortune ());
 			}
+		} elsif ($cmd =~ /^(karma|карма)\s(.+)/su) {
+			# TODO: избавиться от регулярки в пользу манипуляци со строкой через substr
+			$reply = KarmaGet ($m->{chatid}, $2);
+		}
+	# Скорее всего изменение кармы, но это не точно
+	} elsif (substr ($m->{message}, -2) eq '++'  ||  substr ($m->{message}, -2) eq '--') {
+		my @arr = split /\n/s, $m->{message};
+
+		# Предполагается, что фраза - это только одна строка
+		if ($#arr < 1) {
+			$reply = KarmaSet (
+				$m->{chatid},
+				trim (substr $m->{message}, 0, -2),
+				substr $m->{message}, -2
+			);
+		# Если у нас более одной строки - пусть с этим разбирается craniac, у него есть *мозги*
+		} else {
+			$send_to = 'craniac';
+			$reply = $m->{message};
 		}
 	}
 

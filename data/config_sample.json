@@ -22,6 +22,9 @@
     # maximal amount of message forwardings, to avoid endless loops
     "forwards_max" : 5,
 
+    # for karma
+    "cachedir" : "data/cache",
+
     "fortune" : {
         "dir" : "data/fortune",
         "srcdir" : "data/fortune_src"
