@@ -32,6 +32,7 @@ aleesa-phrases
 
 В каталоге contrib находится скрипт для alpine linux, системы инициализации openrc. Этот скрипт достаточно положить В
 /etc/init.d/aleesa-misc сконфигурить сервис по инструкции выше и после этого сервис запускается командой:
-service aleesa-misc start
-в автозагрузку его можно прописать через команду
-rc-update add aleesa-misc default
+service aleesa-phrases start
+
+в автозагрузку его можно прописать через команду:
+rc-update add aleesa-phrases default
