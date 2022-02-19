@@ -1,18 +1,19 @@
 package Proverb;
 # Пословицы и поговорки
 
-use 5.018;
+use 5.018; ## no critic (ProhibitImplicitImport)
 use strict;
 use warnings;
 use utf8;
 use open qw (:std :utf8);
+use Encode qw (decode);
 use English qw ( -no_match_vars );
-use Carp qw (cluck croak);
+use Carp qw (croak);
 use File::Path qw (make_path);
 use Log::Any qw ($log);
 use Math::Random::Secure qw (irand);
 use Mojo::Util qw (trim);
-use SQLite_File;
+use SQLite_File ();
 
 use Conf qw (LoadConf);
 
@@ -31,7 +32,7 @@ sub Seed () {
 
 	my $backingfile = sprintf '%s/proverb.sqlite', $dir;
 
-	if (-f $backingfile) {
+	if (-e $backingfile) {
 		unlink $backingfile   ||  croak "Unable to remove $backingfile: $OS_ERROR";
 	}
 
@@ -41,7 +42,7 @@ sub Seed () {
 	while (my $proverbfile = readdir $srcdirhandle) {
 		my $srcfile = sprintf '%s/%s', $srcdir, $proverbfile;
 
-		unless (-f $srcfile) {
+		unless (-e $srcfile) {
 			next;
 		}
 
@@ -79,7 +80,7 @@ sub Proverb () {
 
 	my $phrase = $array[irand ($#array + 1)];
 	# decode?
-	utf8::decode $phrase;
+	$phrase = decode 'UTF-8', $phrase;
 	untie @array;
 	return $phrase;
 }

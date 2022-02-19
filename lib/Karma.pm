@@ -1,15 +1,14 @@
 package Karma;
 
-use 5.018;
+use 5.018; ## no critic (ProhibitImplicitImport)
 use strict;
 use warnings;
 use utf8;
 use open qw (:std :utf8);
 
 use English qw ( -no_match_vars );
-use Carp qw (cluck);
-use CHI;
-use CHI::Driver::BerkeleyDB;
+use CHI ();
+use CHI::Driver::BerkeleyDB ();
 use Log::Any qw ($log);
 use Mojo::Util qw (trim);
 
@@ -38,7 +37,7 @@ sub KarmaSet (@) {
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
 		root_dir => $cachedir,
-		namespace => __PACKAGE__ . '_' . $chatid
+		namespace => __PACKAGE__ . '_' . $chatid,
 	);
 
 	my $score = $cache->get ($phrase);
@@ -90,7 +89,7 @@ sub KarmaGet (@) {
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
 		root_dir => $cachedir,
-		namespace => __PACKAGE__ . '_' . $chatid
+		namespace => __PACKAGE__ . '_' . $chatid,
 	);
 
 	my $score = $cache->get ($phrase);

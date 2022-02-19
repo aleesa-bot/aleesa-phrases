@@ -1,17 +1,18 @@
 package Friday;
 # Данные модуля спёрты с https://raw.githubusercontent.com/isida/vi/master/data/friday.txt
 
-use 5.018;
+use 5.018; ## no critic (ProhibitImplicitImport)
 use strict;
 use warnings;
 use utf8;
 use open qw (:std :utf8);
+use Encode qw (decode);
 use English qw ( -no_match_vars );
-use Carp qw (cluck croak);
+use Carp qw (croak);
 use File::Path qw (make_path);
 use Log::Any qw ($log);
 use Math::Random::Secure qw (irand);
-use SQLite_File;
+use SQLite_File ();
 
 use Conf qw (LoadConf);
 
@@ -34,7 +35,7 @@ sub Seed () {
 	for (0..$#dow) {
 		my $backingfile = sprintf '%s/%s.sqlite', $dir, $dow[$_];
 
-		if (-f $backingfile) {
+		if (-e $backingfile) {
 			unlink $backingfile   ||  croak "Unable to remove $backingfile: $OS_ERROR\n";
 		}
 
@@ -87,7 +88,7 @@ sub Friday () {
 	};
 
 	my $phrase = $array[irand ($#array + 1)];
-	utf8::decode $phrase;
+	$phrase = decode 'UTF-8', $phrase;
 	untie @array;
 	return $phrase;
 }

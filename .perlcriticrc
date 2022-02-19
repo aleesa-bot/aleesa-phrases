@@ -1,3 +1,15 @@
+#!/usr/bin/env perlcritic
+# Задействованные модули критика:
+#
+# Perl::Critic::More
+# Perl::Critic::Pulp
+# Perl::Critic::TooMuchCode
+# Perl::Critic::Lax
+# Perl::Critic::CognitiveComplexity
+# Perl::Critic::Policy::CompileTime
+# Perl::Critic::Policy::ProhibitImplicitImport
+# Perl::Critic::Policy::Dynamic::NoIndirect
+
 [-ControlStructures::ProhibitUnlessBlocks]
 # oh. c'mon. just a little bit
 
@@ -52,3 +64,25 @@
 
 [-Subroutines::ProhibitSubroutinePrototypes]
 # i like it!
+
+[-TooMuchCode::ProhibitUnnecessaryUTF8Pragma]
+
+[-CodeLayout::RequireUseUTF8]
+
+[-Miscellanea::ProhibitUnrestrictedNoCritic]
+
+[-Editor::RequireEmacsFileVariables]
+
+[-CodeLayout::RequireASCII]
+
+[-TooMuchCode::ProhibitDuplicateLiteral]
+
+[-ErrorHandling::RequireUseOfExceptions]
+
+[-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
+
+[-Lax::RequireConstantOnLeftSideOfEquality::ExceptEq]
+
+[-Lax::ProhibitEmptyQuotes::ExceptAsFallback]
+
+[-ValuesAndExpressions::RestrictLongStrings]
