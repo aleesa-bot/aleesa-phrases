@@ -70,8 +70,8 @@ my $parse_message = sub {
 	$log->debug ('[DEBUG] Incoming message ' . Dumper ($m));
 
 	# Нормальная команда
-	if (substr ($m->{message}, 0, 1) eq $answer->{misc}->{csign}) {
-		my $cmd = substr ($m->{message}, 1);
+	if (substr ($m->{message}, 0, length ($answer->{misc}->{csign})) eq $answer->{misc}->{csign}) {
+		my $cmd = substr $m->{message}, length ($answer->{misc}->{csign});
 
 		if ($cmd eq 'friday'  ||  $cmd eq 'пятница') {
 			$reply = Friday ();
@@ -94,25 +94,48 @@ my $parse_message = sub {
 			} else {
 				$reply = trim (Fortune ());
 			}
-		} elsif ($cmd =~ /^(karma|карма)\s(.+)/su) {
-			# TODO: избавиться от регулярки в пользу манипуляци со строкой через substr
-			$reply = KarmaGet ($m->{chatid}, $2);
+		} elsif (length ($cmd) >= length ('karma ')  &&  substr ($cmd, 0, length ('karma ') eq 'karma ') {
+			# По-умолчанию достаём карму пустоты
+			my $text = undef;
+
+			if (length ($cmd) > length ('karma ')) {
+				$text = substr $cmd, length ('karma ');
+			}
+
+			$reply = KarmaGet ($m->{chatid}, $text);
+		} elsif (length ($cmd) >= length ('карма ')  &&  substr ($cmd, 0, length ('карма ') eq 'карма ') {
+			# По-умолчанию достаём карму пустоты
+			my $text = undef;
+
+			if (length ($cmd) > length ('карма ')) {
+				$text = substr $cmd, length ('карма ');
+			}
+
+			$reply = KarmaGet ($m->{chatid}, $text);
+		# Достаём карму пустоты :)
+		} elsif ($cmd eq 'karma') {
+			$reply = KarmaGet ($m->{chatid}, undef);
+		# Достаём карму пустоты :)
+		}elsif ($cmd eq 'карма') {
+			$reply = KarmaGet ($m->{chatid}, undef);
 		}
 	# Скорее всего изменение кармы, но это не точно
-	} elsif (substr ($m->{message}, -2) eq '++'  ||  substr ($m->{message}, -2) eq '--') {
-		my @arr = split /\n/s, $m->{message};
+	} elsif ($m->{message} > length ('++')) {
+		if (substr ($m->{message}, 0 - length ('++')) eq '++'  ||  substr ($m->{message}, 0 - length ('--')) eq '--') {
+			my @arr = split /\n/s, $m->{message};
 
-		# Предполагается, что фраза - это только одна строка
-		if ($#arr < 1) {
-			$reply = KarmaSet (
-				$m->{chatid},
-				trim (substr $m->{message}, 0, -2),
-				substr $m->{message}, -2,
-			);
-		# Если у нас более одной строки - пусть с этим разбирается craniac, у него есть *мозги*
-		} else {
-			$send_to = 'craniac';
-			$reply = $m->{message};
+			# Предполагается, что фраза - это только одна строка
+			if ($#arr < 1) {
+				$reply = KarmaSet (
+					$m->{chatid},
+					trim (substr $m->{message}, 0, 0 - length ('++')),
+					substr $m->{message}, 0 - length ('++'),
+				);
+			# Если у нас более одной строки - пусть с этим разбирается craniac, у него есть *мозги*
+			} else {
+				$send_to = 'craniac';
+				$reply = $m->{message};
+			}
 		}
 	}
 
