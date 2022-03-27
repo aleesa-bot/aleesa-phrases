@@ -67,6 +67,9 @@ my $parse_message = sub {
 		$answer->{misc}->{msg_format} = 0;
 	}
 
+	$answer->{userid} = 0 + $m->{userid};
+	$answer->{chatid} = 0 + $m->{chatid};
+
 	$log->debug ('[DEBUG] Incoming message ' . Dumper ($m));
 
 	# Нормальная команда
