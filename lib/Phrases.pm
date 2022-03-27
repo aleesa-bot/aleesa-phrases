@@ -142,14 +142,15 @@ my $parse_message = sub {
 		}
 	}
 
-	$log->debug ("[DEBUG] Sending message to channel $send_to " . Dumper ($answer));
-
 	if (defined $reply && $answer->{misc}->{answer}) {
 		$answer->{message} = $reply;
+		$log->debug ("[DEBUG] Sending message to channel $send_to " . Dumper ($answer));
 
 		$self->json ($send_to)->notify (
 			$send_to => $answer,
 		);
+	} else {
+		$log->debug ('[DEBUG] No reply generated, skip sending message.');
 	}
 
 	return;
