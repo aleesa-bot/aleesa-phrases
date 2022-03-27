@@ -1,4 +1,5 @@
 package Karma;
+# Хранит и выдаёт карму фразы
 
 use 5.018; ## no critic (ProhibitImplicitImport)
 use strict;
@@ -22,17 +23,16 @@ my $c = LoadConf ();
 my $cachedir = $c->{cachedir};
 my $max = 5;
 
-# swallow phrase and return answer
 sub KarmaSet (@) {
 	my $chatid = shift;
 	my $phrase = shift;
 	my $action = shift;
 
-	$phrase = trim ($phrase);
-
 	if ((! defined $phrase) || $phrase eq '') {
 		$phrase = ' ';
 	}
+
+	$phrase = trim ($phrase);
 
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
@@ -80,11 +80,11 @@ sub KarmaGet (@) {
 	my $chatid = shift;
 	my $phrase = shift;
 
-	$phrase = trim ($phrase);
-
 	if ((! defined $phrase) || $phrase eq '') {
 		$phrase = ' ';
 	}
+
+	$phrase = trim ($phrase);
 
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
