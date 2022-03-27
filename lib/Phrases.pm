@@ -97,7 +97,7 @@ my $parse_message = sub {
 			} else {
 				$reply = trim (Fortune ());
 			}
-		} elsif (length ($cmd) >= length ('karma ')  &&  substr ($cmd, 0, length ('karma ') eq 'karma ')) {
+		} elsif (length ($cmd) >= length ('karma ')  &&  substr ($cmd, 0, length ('karma ')) eq 'karma ') {
 			# По-умолчанию достаём карму пустоты
 			my $text = undef;
 
@@ -106,7 +106,7 @@ my $parse_message = sub {
 			}
 
 			$reply = KarmaGet ($m->{chatid}, $text);
-		} elsif (length ($cmd) >= length ('карма ')  &&  substr ($cmd, 0, length ('карма ') eq 'карма ')) {
+		} elsif (length ($cmd) >= length ('карма ')  &&  substr ($cmd, 0, length ('карма ')) eq 'карма ') {
 			# По-умолчанию достаём карму пустоты
 			my $text = undef;
 
@@ -123,7 +123,7 @@ my $parse_message = sub {
 			$reply = KarmaGet ($m->{chatid}, undef);
 		}
 	# Скорее всего изменение кармы, но это не точно
-	} elsif ($m->{message} > length ('++')) {
+	} elsif (length ($m->{message}) > length ('++')) {
 		if (substr ($m->{message}, 0 - length ('++')) eq '++'  ||  substr ($m->{message}, 0 - length ('--')) eq '--') {
 			my @arr = split /\n/s, $m->{message};
 

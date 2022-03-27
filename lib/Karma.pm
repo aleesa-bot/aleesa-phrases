@@ -28,11 +28,16 @@ sub KarmaSet (@) {
 	my $phrase = shift;
 	my $action = shift;
 
-	if ((! defined $phrase) || $phrase eq '') {
-		$phrase = ' ';
+	unless (defined $phrase) {
+		$phrase = '';
 	}
 
 	$phrase = trim ($phrase);
+
+	# Костылёк для кармы пустоты
+	if ($phrase eq '') {
+		$phrase = ' ';
+	}
 
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
@@ -80,11 +85,16 @@ sub KarmaGet (@) {
 	my $chatid = shift;
 	my $phrase = shift;
 
-	if ((! defined $phrase) || $phrase eq '') {
-		$phrase = ' ';
+	unless (defined $phrase) {
+		$phrase = '';
 	}
 
 	$phrase = trim ($phrase);
+
+	# Костылёк для кармы пустоты
+	if ($phrase eq '') {
+		$phrase = ' ';
+	}
 
 	my $cache = CHI->new (
 		driver => 'BerkeleyDB',
