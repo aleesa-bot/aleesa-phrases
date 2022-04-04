@@ -1,4 +1,5 @@
 #!/usr/bin/env perlcritic
+
 # Задействованные модули критика:
 #
 # Perl::Critic::More
@@ -9,6 +10,9 @@
 # Perl::Critic::Policy::CompileTime
 # Perl::Critic::Policy::ProhibitImplicitImport
 # Perl::Critic::Policy::Dynamic::NoIndirect
+# Perl::Critic::StricterSubs
+# Perl::Critic::Policy::ProhibitImplicitImport
+# Perl::Critic::Policy::CodeLayout::RequireUseUTF8
 
 [-ControlStructures::ProhibitUnlessBlocks]
 # oh. c'mon. just a little bit

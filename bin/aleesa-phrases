@@ -83,8 +83,8 @@ if ($UID == 0) {
 			make_path (
 					$logdir, {
 							uid   => $uid,
-							group => $gid
-					}
+							group => $gid,
+					},
 			) or die "Unable to create $logdir: $OS_ERROR\n";
 		}
 	}
@@ -115,7 +115,7 @@ my $apath = abs_path $PROGRAM_NAME;
 unless (defined $apath) {
 	$log->fatal ("[FATAL] Unable to get abs_path: $OS_ERROR\n");
 	exit 1;
-};
+}
 
 my $pidfile = sprintf '%s/%s.pid', $piddir, basename $apath;
 $log->info ("[INFO] Creating pidfile at $pidfile");
